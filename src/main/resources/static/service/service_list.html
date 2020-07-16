@@ -17,11 +17,7 @@
 			        detailDiv.style.display = 'none'
 	        }
 
-	        //删除
-	        var deleteAccount = function () {
-		        var r = window.confirm('确定要删除此业务账号吗？删除后将不能恢复。')
-		        document.getElementById('operate_result_info').style.display = 'block'
-	        }
+
 
 
 			$(function () {
@@ -74,17 +70,20 @@
 								} else {
 									status = '删除'
 								}
+								var td = '                            <td class="td_modi">\n'
+                                var ltd = '                            </td>\n'
 								var operation =
-									'                            <td class="td_modi">\n' +
-									'                                <input type="button"  value="' + btn_value + '" class="' + btn_class + '" onclick="' + btn_click + '"/>\n' +
+									'                                <input type="button" value="' + btn_value + '" class="' + btn_class + '" onclick="' + btn_click + '"/>\n' +
 									'                                <input type="button" value="修改" class="btn_modify"\n' +
 									'                                       onclick="location.href=\'service_modi.html?id=' + ele.serviceId + '\';"/>\n' +
-									'                                <input type="button" value="删除" class="btn_delete" onclick="deleteAccount();"/>\n' +
-									'                            </td>\n' +
-									'                        </tr>'
+									'                                <input type="button" value="删除" class="btn_delete" onclick="deleteAccount(this);"/>\n'
+
                                 if(status === '删除'){
                                 	operation = ""
                                 }
+
+                                var final = td+operation+ltd;
+
 								var duration
 								if (ele.cost.baseDuration === null) {
 									duration = '啥也不是'
@@ -93,7 +92,7 @@
 								}
 
 								var element = '                        <tr>\n' +
-									'                            <td><a href="service_detail.html?id=' + ele.serviceId + '" title="查看明细">' + ele.serviceId + '</a></td>\n' +
+									'                            <td><a id="a" href="service_detail.html?id=' + ele.serviceId + '" title="查看明细">' + ele.serviceId + '</a></td>\n' +
 									'                            <td>' + ele.accountId + '</td>\n' +
 									'                            <td>' + ele.account['idcardNo'] + '</td>\n' +
 									'                            <td>' + ele.account['realName'] + '</td>\n' +
@@ -107,7 +106,7 @@
 									'                                <div class="detail_info">\n' +
 									'                                    ' + ele.cost.descr + '\n' +
 									'                                </div>\n' +
-									'                            </td>\n' +operation
+									'                            </td>\n' +final+'</tr>'
 
 								head += element
 
@@ -170,12 +169,20 @@
 										btn_click = 'setState(this);'
 									} else {
 										status = '删除'
-										btn_value = '开通'
-										btn_class = 'btn_start'
-										btn_click = 'setState(this);'
+									}
+									var td = '                            <td class="td_modi">\n'
+									var ltd = '                            </td>\n'
+									var operation =
+										'                                <input type="button" value="' + btn_value + '" class="' + btn_class + '" onclick="' + btn_click + '"/>\n' +
+										'                                <input type="button" value="修改" class="btn_modify"\n' +
+										'                                       onclick="location.href=\'service_modi.html?id=' + ele.serviceId + '\';"/>\n' +
+										'                                <input type="button" value="删除" class="btn_delete" onclick="deleteAccount(this);"/>\n'
+									if(status === '删除'){
+										operation = ""
 									}
 									var duration
 									var des
+									var final = td+operation+ltd;
 									if (ele.cost.baseDuration === null) {
 										duration = '啥也不是'
 										des = '描述也没有'
@@ -199,14 +206,7 @@
 										'                                <div class="detail_info">\n' +
 										'                                    ' + des + '\n' +
 										'                                </div>\n' +
-										'                            </td>\n' +
-										'                            <td class="td_modi">\n' +
-										'                                <input id="con" type="button" value="' + btn_value + '" class="' + btn_class + '" onclick="' + btn_click + '"/>\n' +
-										'                                <input type="button" value="修改" class="btn_modify"\n' +
-										'                                       onclick="location.href=\'service_modi.html?id=' + ele.serviceId + '\';"/>\n' +
-										'                                <input type="button" value="删除" class="btn_delete" onclick="deleteAccount();"/>\n' +
-										'                            </td>\n' +
-										'                        </tr>'
+										'                            </td>\n' +final+'</tr>'
 									head += element
 
 								}
@@ -222,7 +222,68 @@
 	        var setState = function (e) {
 		        console.log(e)
 		        var r = window.confirm('确定要' + e.value + '此业务账号吗？')
-		        document.getElementById('operate_result_info').style.display = 'block'
+                if(r){
+	                var id = e.parentNode.parentNode.firstElementChild.firstElementChild.innerText;
+	                console.log(id)
+	                // console.log($("#a").text())
+	                $.ajax({
+		                type: 'POST',
+		                url: '/updateStatus',
+		                dataType: 'json',
+		                data: JSON.stringify({
+			                serviceId: id
+		                }),
+		                contentType: 'application/json',
+		                success: function (result) {
+			                if (result.code === 200) {
+				                var info = document.getElementById('operate_result_info');
+				                info.innerText = result.msg;
+				                info.style.display = 'block'
+				                console.log(result)
+				                setTimeout(()=>{
+
+					                location.href = "service_list.html"
+				                },1000)
+			                }
+		                }
+	                })
+                }
+
+
+
+	        }
+	        //删除
+	        var deleteAccount = function (e) {
+		        var r = window.confirm('确定要删除此业务账号吗？删除后将不能恢复。')
+                console.log(e.target)
+		        if(r){
+			        var aid = e.parentNode.parentNode.firstElementChild.firstElementChild.innerText;
+			        console.log(aid)
+			        // console.log($("#d").text())
+			        $.ajax({
+				        type: 'POST',
+				        url: '/delete',
+				        dataType: 'json',
+				        data: JSON.stringify({
+					        serviceId: aid
+				        }),
+				        contentType: 'application/json',
+				        success: function (result) {
+					        if (result.code === 200) {
+					        	var info = document.getElementById('operate_result_info');
+					        	info.innerText = result.msg;
+						        info.style.display = 'block'
+						        console.log(result)
+                                setTimeout(()=>{
+
+	                                location.href = "service_list.html"
+                                },1000)
+
+					        }
+				        }
+			        })
+		        }
+		        // document.getElementById('operate_result_info').style.display = 'block'
 	        }
 
 

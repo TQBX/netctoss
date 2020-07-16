@@ -1,12 +1,13 @@
 package com.smday.netctoss.mbg.model;
 
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class Service implements Serializable {
+    @Id
     @ApiModelProperty(value = "服务id")
     private Integer serviceId;
 

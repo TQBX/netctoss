@@ -85,7 +85,7 @@ public class ServiceController {
         return success;
     }
 
-    @GetMapping("/service/{id}")//serviceId
+    @GetMapping("/services/{id}")//serviceId
     public AjaxResult getDetails(@PathVariable Integer id){
 
         Service service = serviceService.findById(id);
@@ -96,18 +96,42 @@ public class ServiceController {
         return AjaxResult.success(service);
     }
 
-    @PostMapping("/service/{id}")//serviceId
+    @PostMapping("/services/{id}")//serviceId
     public AjaxResult getDetails(@PathVariable Integer id,@RequestBody Map<String,Object> map){
         System.out.println(map.get("costId"));
 
         Integer costID = Integer.parseInt((String) map.get("costId"));
 
-        Service service = serviceService.findById(costID);
+        Service service = serviceService.findById(id);
+        System.out.println(service);
         service.setCostId(costID);
         if(serviceService.update(service) == 0){
             return AjaxResult.error("保存失败");
         }
+        System.out.println(serviceService.findById(id));
         return AjaxResult.success("保存成功");
+    }
+
+    @PostMapping("/updateStatus")//serviceId
+    public AjaxResult updateStatus(@RequestBody Map<String,Object> map){
+        System.out.println(map.get("serviceId"));
+        Integer serviceID = Integer.parseInt((String) map.get("serviceId"));
+
+        if(serviceService.updateStatus(serviceID) == 0){
+            return AjaxResult.error("更新状态失败");
+        }
+        return AjaxResult.success("更新状态成功");
+    }
+
+    @PostMapping("/delete")//serviceId
+    public AjaxResult delete(@RequestBody Map<String,Object> map){
+        System.out.println(map.get("serviceId"));
+        Integer serviceID = Integer.parseInt((String) map.get("serviceId"));
+
+        if(serviceService.delete(serviceID) == 0){
+            return AjaxResult.error("删除失败");
+        }
+        return AjaxResult.success("删除成功");
     }
 
 }

@@ -30,4 +30,8 @@ public interface IServiceService {
     int insert(Service service);
 
     int update(Service service);
+
+    int updateStatus(Integer serviceID);
+
+    int delete(Integer serviceID);
 }

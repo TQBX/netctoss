@@ -50,7 +50,7 @@ public class ServiceServiceImpl implements IServiceService {
             criteria.andUnixHostEqualTo(unixHost);
         }
         List<Service> services = serviceMapper.selectByExample(example);
-        if(StringUtils.isEmpty(idcardNo)&&StringUtils.isEmpty(status)){
+        if (StringUtils.isEmpty(idcardNo) && StringUtils.isEmpty(status)) {
             return services;
         }
         List<Service> newList = new ArrayList<>();
@@ -58,21 +58,21 @@ public class ServiceServiceImpl implements IServiceService {
         for (Service service : services) {
 
             //填了两个信息
-            if(StringUtils.isNotEmpty(idcardNo)&&StringUtils.isNotEmpty(status)){
-                if(idcardNo.equals(service.getAccount().getIdcardNo())&&status.equals(service.getStatus())){
+            if (StringUtils.isNotEmpty(idcardNo) && StringUtils.isNotEmpty(status)) {
+                if (idcardNo.equals(service.getAccount().getIdcardNo()) && status.equals(service.getStatus())) {
                     newList.add(service);
                 }
             }
             //只有身份真
-            if(StringUtils.isNotEmpty(idcardNo)){
+            if (StringUtils.isNotEmpty(idcardNo)) {
                 service.setAccount(accountMapper.selectByPrimaryKey(service.getServiceId()));
-                if(idcardNo.equals(service.getAccount().getIdcardNo())){
+                if (idcardNo.equals(service.getAccount().getIdcardNo())) {
                     newList.add(service);
                 }
             }
             //只有状态
-            if(StringUtils.isNotEmpty(status)){
-                if(status.equals(service.getStatus())){
+            if (StringUtils.isNotEmpty(status)) {
+                if (status.equals(service.getStatus())) {
                     newList.add(service);
                 }
             }
@@ -107,5 +107,30 @@ public class ServiceServiceImpl implements IServiceService {
     @Override
     public int update(Service service) {
         return serviceMapper.updateByPrimaryKey(service);
+    }
+
+    @Override
+    public int updateStatus(Integer serviceID) {
+
+        //根据id找到service
+        Service service = findById(serviceID);
+
+        String status = service.getStatus();
+        if ("1".equals(status) || "2".equals(status)) {
+            service.setStatus("0");
+        } else {
+            service.setStatus("1");
+        }
+        //更改service的status值即可
+        return update(service);
+    }
+
+    @Override
+    public int delete(Integer serviceID) {
+        //根据id找到service
+        Service service = findById(serviceID);
+        service.setStatus("3");
+        //更改service的status值即可
+        return update(service);
     }
 }
