@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smday.netctoss.mbg.mapper.CostMapper">
+  <resultMap id="BaseResultMap" type="com.smday.netctoss.mbg.model.Cost">
+    <id column="cost_id" jdbcType="INTEGER" property="costId" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="base_duration" jdbcType="INTEGER" property="baseDuration" />
+    <result column="base_cost" jdbcType="DOUBLE" property="baseCost" />
+    <result column="unit_cost" jdbcType="DOUBLE" property="unitCost" />
+    <result column="STATUS" jdbcType="CHAR" property="status" />
+    <result column="descr" jdbcType="VARCHAR" property="descr" />
+    <result column="creatime" jdbcType="TIMESTAMP" property="creatime" />
+    <result column="startime" jdbcType="TIMESTAMP" property="startime" />
+    <result column="cost_type" jdbcType="CHAR" property="costType" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    cost_id, NAME, base_duration, base_cost, unit_cost, STATUS, descr, creatime, startime, 
+    cost_type
+  </sql>
+  <select id="selectByExample" parameterType="com.smday.netctoss.mbg.model.CostExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cost
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cost
+    where cost_id = #{costId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cost
+    where cost_id = #{costId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.smday.netctoss.mbg.model.CostExample">
+    delete from cost
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smday.netctoss.mbg.model.Cost">
+    insert into cost (cost_id, NAME, base_duration, 
+      base_cost, unit_cost, STATUS, 
+      descr, creatime, startime, 
+      cost_type)
+    values (#{costId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{baseDuration,jdbcType=INTEGER}, 
+      #{baseCost,jdbcType=DOUBLE}, #{unitCost,jdbcType=DOUBLE}, #{status,jdbcType=CHAR}, 
+      #{descr,jdbcType=VARCHAR}, #{creatime,jdbcType=TIMESTAMP}, #{startime,jdbcType=TIMESTAMP}, 
+      #{costType,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smday.netctoss.mbg.model.Cost">
+    insert into cost
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="costId != null">
+        cost_id,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="baseDuration != null">
+        base_duration,
+      </if>
+      <if test="baseCost != null">
+        base_cost,
+      </if>
+      <if test="unitCost != null">
+        unit_cost,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="descr != null">
+        descr,
+      </if>
+      <if test="creatime != null">
+        creatime,
+      </if>
+      <if test="startime != null">
+        startime,
+      </if>
+      <if test="costType != null">
+        cost_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="costId != null">
+        #{costId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="baseDuration != null">
+        #{baseDuration,jdbcType=INTEGER},
+      </if>
+      <if test="baseCost != null">
+        #{baseCost,jdbcType=DOUBLE},
+      </if>
+      <if test="unitCost != null">
+        #{unitCost,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="descr != null">
+        #{descr,jdbcType=VARCHAR},
+      </if>
+      <if test="creatime != null">
+        #{creatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startime != null">
+        #{startime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="costType != null">
+        #{costType,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smday.netctoss.mbg.model.CostExample" resultType="java.lang.Long">
+    select count(*) from cost
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cost
+    <set>
+      <if test="record.costId != null">
+        cost_id = #{record.costId,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.baseDuration != null">
+        base_duration = #{record.baseDuration,jdbcType=INTEGER},
+      </if>
+      <if test="record.baseCost != null">
+        base_cost = #{record.baseCost,jdbcType=DOUBLE},
+      </if>
+      <if test="record.unitCost != null">
+        unit_cost = #{record.unitCost,jdbcType=DOUBLE},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.descr != null">
+        descr = #{record.descr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creatime != null">
+        creatime = #{record.creatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.startime != null">
+        startime = #{record.startime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.costType != null">
+        cost_type = #{record.costType,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cost
+    set cost_id = #{record.costId,jdbcType=INTEGER},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      base_duration = #{record.baseDuration,jdbcType=INTEGER},
+      base_cost = #{record.baseCost,jdbcType=DOUBLE},
+      unit_cost = #{record.unitCost,jdbcType=DOUBLE},
+      STATUS = #{record.status,jdbcType=CHAR},
+      descr = #{record.descr,jdbcType=VARCHAR},
+      creatime = #{record.creatime,jdbcType=TIMESTAMP},
+      startime = #{record.startime,jdbcType=TIMESTAMP},
+      cost_type = #{record.costType,jdbcType=CHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smday.netctoss.mbg.model.Cost">
+    update cost
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="baseDuration != null">
+        base_duration = #{baseDuration,jdbcType=INTEGER},
+      </if>
+      <if test="baseCost != null">
+        base_cost = #{baseCost,jdbcType=DOUBLE},
+      </if>
+      <if test="unitCost != null">
+        unit_cost = #{unitCost,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=CHAR},
+      </if>
+      <if test="descr != null">
+        descr = #{descr,jdbcType=VARCHAR},
+      </if>
+      <if test="creatime != null">
+        creatime = #{creatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startime != null">
+        startime = #{startime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="costType != null">
+        cost_type = #{costType,jdbcType=CHAR},
+      </if>
+    </set>
+    where cost_id = #{costId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smday.netctoss.mbg.model.Cost">
+    update cost
+    set NAME = #{name,jdbcType=VARCHAR},
+      base_duration = #{baseDuration,jdbcType=INTEGER},
+      base_cost = #{baseCost,jdbcType=DOUBLE},
+      unit_cost = #{unitCost,jdbcType=DOUBLE},
+      STATUS = #{status,jdbcType=CHAR},
+      descr = #{descr,jdbcType=VARCHAR},
+      creatime = #{creatime,jdbcType=TIMESTAMP},
+      startime = #{startime,jdbcType=TIMESTAMP},
+      cost_type = #{costType,jdbcType=CHAR}
+    where cost_id = #{costId,jdbcType=INTEGER}
+  </update>
+</mapper>
