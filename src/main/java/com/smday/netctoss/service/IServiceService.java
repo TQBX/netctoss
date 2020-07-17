@@ -34,4 +34,6 @@ public interface IServiceService {
     int updateStatus(Integer serviceID);
 
     int delete(Integer serviceID);
+
+    int add(Map<String, Object> map);
 }

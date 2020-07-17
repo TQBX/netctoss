@@ -5,12 +5,16 @@ import com.github.pagehelper.PageHelper;
 import com.smday.netctoss.common.StringUtils;
 import com.smday.netctoss.mbg.mapper.AccountMapper;
 import com.smday.netctoss.mbg.mapper.ServiceMapper;
+import com.smday.netctoss.mbg.model.Account;
 import com.smday.netctoss.mbg.model.Service;
 import com.smday.netctoss.mbg.model.ServiceExample;
 import com.smday.netctoss.service.IServiceService;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.awt.peer.CanvasPeer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -131,6 +135,26 @@ public class ServiceServiceImpl implements IServiceService {
         Service service = findById(serviceID);
         service.setStatus("3");
         //更改service的status值即可
+        return update(service);
+    }
+
+    @Override
+    public int add(Map<String, Object> map) {
+        System.out.println((String)map.get("accountId"));
+        System.out.println( (String)map.get("costId"));
+        System.out.println(map);
+        Integer accountId = Integer.parseInt( (String)map.get("accountId"));
+        Integer costId = Integer.parseInt( (String)map.get("costId"));
+        String password = (String) map.get("password");
+        ServiceExample example = new ServiceExample();
+        example.createCriteria().andAccountIdEqualTo(accountId);
+        List<Service> services = serviceMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(services)){
+            return 0;
+        }
+        Service service = services.get(0);
+        service.setCostId(costId);
+        service.setLoginPasswd(password);
         return update(service);
     }
 }

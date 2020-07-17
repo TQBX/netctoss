@@ -85,10 +85,13 @@
                                 var final = td+operation+ltd;
 
 								var duration
+                                var descr
 								if (ele.cost.baseDuration === null) {
 									duration = '啥也不是'
+                                    descr = '也没有描述'
 								} else {
 									duration = `包${ele.cost.baseDuration}小时`
+                                    descr = ele.cost.descr
 								}
 
 								var element = '                        <tr>\n' +
@@ -104,7 +107,7 @@
 									'                                   onmouseout="showDetail(false,this);">' + duration + '</a>\n' +
 									'                                <!--浮动的详细信息-->\n' +
 									'                                <div class="detail_info">\n' +
-									'                                    ' + ele.cost.descr + '\n' +
+									'                                    ' + descr + '\n' +
 									'                                </div>\n' +
 									'                            </td>\n' +final+'</tr>'
 

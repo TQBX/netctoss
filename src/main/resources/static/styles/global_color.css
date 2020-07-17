@@ -256,6 +256,7 @@ input.btn_search,input.btn_search:hover,input.btn_search:active
 input.btn_search_large,input.btn_search_large:hover,input.btn_search_large:active
 {
     background: url(../images/search_large.png) no-repeat;
+    background-size: 135px 25px;
     color: #0a97c9;
     border:0;
 }

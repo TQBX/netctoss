@@ -518,8 +518,8 @@ input.btn_search_large
 {
     height: 26px;
     line-height: 26px;
-    width: 110px;
-    padding-left: 18px;
+    width: 135px;
+    padding-left: 20px;
     margin-left: 3px;
 }
 input.btn_search:hover,input.btn_search_large:hover

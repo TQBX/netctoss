@@ -9,4 +9,6 @@ public interface IAccountService {
 
     Account findById(Integer id);
 
+    Account findByIdCardNo(String idCard);
+
 }
