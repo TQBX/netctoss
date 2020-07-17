@@ -8,5 +8,5 @@ import com.smday.netctoss.mbg.model.AdminInfo;
 public interface IAdminInfoService {
 
 
-    AdminInfo login(AdminInfo info);
+    AdminInfo selectAdminByAdminCode(String adminCode);
 }

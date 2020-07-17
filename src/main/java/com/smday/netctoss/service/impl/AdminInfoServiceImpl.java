@@ -4,7 +4,6 @@ import com.smday.netctoss.mbg.mapper.AdminInfoMapper;
 import com.smday.netctoss.mbg.model.AdminInfo;
 import com.smday.netctoss.mbg.model.AdminInfoExample;
 import com.smday.netctoss.service.IAdminInfoService;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -22,16 +21,15 @@ public class AdminInfoServiceImpl implements IAdminInfoService {
     AdminInfoMapper adminInfoMapper;
 
     @Override
-    public AdminInfo login(AdminInfo info) {
-        AdminInfoExample example = new AdminInfoExample();
-        example.createCriteria().andAdminCodeEqualTo(info.getAdminCode())
-                .andPasswordEqualTo(info.getPassword());
-        List<AdminInfo> adminInfos = adminInfoMapper.selectByExample(example);
+    public AdminInfo selectAdminByAdminCode(String adminCode) {
 
-        if(CollectionUtils.isEmpty(adminInfos)){
+        AdminInfoExample example = new AdminInfoExample();
+        example.createCriteria().andAdminCodeEqualTo(adminCode);
+
+        List<AdminInfo> adminInfos = adminInfoMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(adminInfos)) {
             return null;
         }
         return adminInfos.get(0);
-
     }
 }
